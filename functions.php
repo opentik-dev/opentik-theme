@@ -2,6 +2,7 @@
 require_once __DIR__ . '/inc/setup.php';
 require_once __DIR__ . '/inc/template-tags.php';
 require_once __DIR__ . '/inc/logging.php';
+require_once __DIR__ . '/inc/color-utils.php';
 
 // Customizer
 require_once __DIR__ . '/inc/customizer-header.php';

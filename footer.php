@@ -31,13 +31,8 @@ if ($bg_type === 'dark') {
     $footer_class .= "bg-[var(--bg-card)] border-[var(--border-color)] ";
 } elseif ($bg_type === 'custom') {
     $footer_style .= "background-color: " . esc_attr($bg_color) . "; ";
-    // Calculate brightness for border
-    $hex = ltrim($bg_color, '#');
-    if (strlen($hex) == 3) { $hex = str_repeat(substr($hex,0,1), 2) . str_repeat(substr($hex,1,1), 2) . str_repeat(substr($hex,2,1), 2); }
-    $r = hexdec(substr($hex,0,2)); $g = hexdec(substr($hex,2,2)); $b = hexdec(substr($hex,4,2));
     $rgba_border = "rgba(255, 255, 255, 0.1)";
-    $brightness = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
-    if ($brightness > 125) $rgba_border = "rgba(0, 0, 0, 0.1)";
+    if (opentik_contrast_text($bg_color) === '#0f172a') $rgba_border = "rgba(0, 0, 0, 0.1)";
     $footer_style .= "border-color: " . $rgba_border . "; ";
 }
 
@@ -75,7 +70,8 @@ function opentik_get_grid_class($count) {
     if ($count == 1) return 'grid-cols-1';
     if ($count == 2) return 'md:grid-cols-2';
     if ($count == 3) return 'md:grid-cols-3';
-    return 'md:grid-cols-2 lg:grid-cols-' . $count;
+    if ($count == 4) return 'md:grid-cols-2 lg:grid-cols-4';
+    return 'md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5';
 }
 
 // Render Columns
@@ -140,14 +136,9 @@ foreach ($cols as $col) {
             <?php if ($show_title) : 
                 $title_span_class = "text-lg font-extrabold tracking-tight transition-all duration-300 inline-block ";
                 $title_span_style = "";
-                
-                $hex = ltrim($title_bg_color, '#');
-                if (strlen($hex) == 3) { $hex = str_repeat(substr($hex,0,1), 2) . str_repeat(substr($hex,1,1), 2) . str_repeat(substr($hex,2,1), 2); }
-                $r = hexdec(substr($hex,0,2)); $g = hexdec(substr($hex,2,2)); $b = hexdec(substr($hex,4,2));
-                $rgba_glass = "rgba($r, $g, $b, 0.15)";
-                
-                $brightness = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
-                $text_color_over_bg = ($brightness > 125) ? '#0f172a' : '#ffffff';
+
+                $rgba_glass = opentik_hex_to_rgba($title_bg_color, 0.15);
+                $text_color_over_bg = opentik_contrast_text($title_bg_color);
 
                 if ($title_style === 'transparent') {
                     $title_span_class .= esc_attr($title_class) . " " . esc_attr($link_hover_text) . " ";

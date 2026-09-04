@@ -77,13 +77,8 @@ $header_py = get_theme_mod('opentik_header_padding_y', 3);
             $title_span_style = "font-size: " . esc_attr($title_size) . "px; ";
             
             // Hex to RGBA for glass effect & brightness for text color
-            $hex = ltrim($title_bg_color, '#');
-            if (strlen($hex) == 3) { $hex = str_repeat(substr($hex,0,1), 2) . str_repeat(substr($hex,1,1), 2) . str_repeat(substr($hex,2,1), 2); }
-            $r = hexdec(substr($hex,0,2)); $g = hexdec(substr($hex,2,2)); $b = hexdec(substr($hex,4,2));
-            $rgba_glass = "rgba($r, $g, $b, 0.15)";
-            
-            $brightness = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
-            $text_color_over_bg = ($brightness > 125) ? '#0f172a' : '#ffffff';
+            $rgba_glass = opentik_hex_to_rgba($title_bg_color, 0.15);
+            $text_color_over_bg = opentik_contrast_text($title_bg_color);
 
             if ($title_style === 'transparent') {
                 $title_span_class .= "text-[var(--text-main)] ";
