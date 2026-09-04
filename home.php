@@ -2,7 +2,9 @@
 get_header();
 
 // Display the premium animated slider
-get_template_part('parts/slider');
+if (get_theme_mod('opentik_show_home_slider', true)) {
+    get_template_part('parts/slider');
+}
 ?>
 <section class="hero-banner mb-8 border-b border-white/5 pb-5">
     <div>
@@ -10,15 +12,4 @@ get_template_part('parts/slider');
         <p class="max-w-2xl text-slate-400 text-sm md:text-base"><?php esc_html_e('تغطية دقيقة ومباشرة لأحدث الأخبار التقنية العربية والعالمية.', 'opentik'); ?></p>
     </div>
 </section>
-<?php
-if (have_posts()) :
-    echo '<div class="' . esc_attr(opentik_get_archive_wrapper_class()) . '">';
-    while (have_posts()) : the_post();
-        get_template_part('parts/content', 'card');
-    endwhile;
-    echo '</div>';
-    opentik_pagination();
-else :
-    echo '<p>' . esc_html__('لم يتم العثور على مقالات.', 'opentik') . '</p>';
-endif;
-get_footer();
+<?php opentik_render_post_loop(__('لم يتم العثور على مقالات.', 'opentik')); get_footer();

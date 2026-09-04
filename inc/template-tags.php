@@ -164,3 +164,74 @@ if (!function_exists('opentik_estimated_reading_time')) {
     }
 }
 
+if (!function_exists('opentik_render_post_loop')) {
+    function opentik_render_post_loop(string $empty_message): void
+    {
+        if (have_posts()) :
+            echo '<div class="' . esc_attr(opentik_get_archive_wrapper_class()) . '">';
+            while (have_posts()) : the_post();
+                get_template_part('parts/content', 'card');
+            endwhile;
+            echo '</div>';
+            opentik_pagination();
+        else :
+            echo '<p>' . esc_html($empty_message) . '</p>';
+        endif;
+    }
+}
+
+if (!function_exists('opentik_first_category_name')) {
+    function opentik_first_category_name(): string
+    {
+        $categories = get_the_category();
+        if (!empty($categories)) {
+            return $categories[0]->name;
+        }
+        return __('تقنية', 'opentik');
+    }
+}
+
+if (!function_exists('opentik_fallback_menu_items')) {
+    function opentik_fallback_menu_items(int $limit = 5): array
+    {
+        $items = [
+            [
+                'url' => home_url('/'),
+                'title' => __('الرئيسية', 'opentik'),
+                'active' => is_front_page(),
+            ],
+        ];
+
+        $pages = get_pages([
+            'sort_column' => 'menu_order',
+            'sort_order' => 'ASC',
+            'number' => max(1, $limit),
+            'hierarchical' => false,
+        ]);
+
+        foreach ($pages as $page) {
+            $items[] = [
+                'url' => get_permalink($page->ID),
+                'title' => $page->post_title,
+                'active' => is_page($page->ID),
+            ];
+        }
+
+        return $items;
+    }
+}
+
+if (!function_exists('opentik_needs_prism')) {
+    function opentik_needs_prism(): bool
+    {
+        if (!is_singular()) {
+            return false;
+        }
+        $content = get_post_field('post_content', get_queried_object_id());
+        if (empty($content)) {
+            return false;
+        }
+        return (bool) preg_match('/<pre\b|\[code\]|language-/', $content);
+    }
+}
+
