@@ -1,50 +1,30 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# دستور مشروع OpenTik Theme
 
-## Core Principles
+## المبادئ الأساسية
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. معايير WordPress والأمان
+كل مخرجات HTML تُمرر عبر دوال escaping (`esc_html`, `esc_attr`, `esc_url`)، وكل مدخلات تُعبر عبر sanitize. لا تُنفَّذ أوامر shell داخل PHP، ولا تُسجَّل بيانات حساسة. اتباع WordPress Coding Standards لكل التعليمات البرمجية.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. التوثيق الأدنى (NON-NEGOTIABLE)
+لا يجوز أن يكون التوثيق أكبر من الكود. لكل ميزة ملفان فقط: `spec.md` و `tasks.md`، بالإضافة إلى دستور واحد. أي قالب/ملف توثيقي غير مطلوب يُحذف.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. عدم التكرار (DRY) ومكافحة الانتفاخ
+المنطق المتكرر يُستخرج إلى `inc/` كدوال help؛ لا تُكرَّر الحلقات أو مقتطفات العرض في أكثر من ملف. أي ملف/خاصية بلا استخدام يُحذف (YAGNI). لا إضافات (Feature Creep) خارج نطاق الميزة.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. ميزانية الأداء
+الصفحة الرئيسية تُحمَّل تحت 2 ثانية. لا تُضاف استعلامات WP_Query زائدة؛ السلايدر وقوائم "الشائع" قابلة للإيقاف من المخصص. الأصول الثقيلة (PrismJS، الخطوط، السكريبتات) تُحمَّل مشروطة عند الحاجة فقط.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+## قسم إضافي: جودة الإصدار
+- `npm run lint` و `npm run build` يجب أن ينجحا قبل أي التزام.
+- فئات Tailwind ديناميكية ممنوعة: أسماء الفئات تُدار عبر نصوص حرفية أو `style` inline محسوب، ليتمكن فاحص Tailwind من توليدها.
+- ملفات التوزيع (build/) و assets/dist لا توضع في git؛ تُبنى بـ `npm run build` وتُغلف بـ `npm run package`.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## قسم إضافي: سير العمل والتزمات
+- فرع ميزة لكل مهمة (`NNN-short-name`)، والتزمات تدريجية برسائل واضحة.
+- الحذف أولًا ثم البناء: إزالة الميت/المكرر قبل الإضافات.
+- لكل إصلاح تحقق ذاتي: إعادة البناء + المسح البصري للنتيجة.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+## الحوكمة
+الدستور يتفوق على أي ممارسة أخرى، والتعديل يتم بنسخ مرقّمة جديدة وتوثيق تاريخ التعديل. كل مراجعة تتأكد من الالتزام بالحد الأدنى من التوثيق وعدم الانتفاخ.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
-
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
-
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**الإصدار**: 1.0.0 | **التصديق**: 2026-09-05 | **آخر تعديل**: 2026-09-05
