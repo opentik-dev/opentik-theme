@@ -1,0 +1,24 @@
+{
+  "name": "opentik-theme",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OpenTik Arabic news WordPress theme",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --watch --mode development",
+    "lint": "eslint assets/src/js --ext .js",
+    "verify": "node verify-build.js",
+    "package": "zip -r opentik-theme.zip assets/dist inc parts index.php home.php single.php page.php archive.php search.php header.php footer.php functions.php style.css README.md screenshot.png"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.0",
+    "autoprefixer": "10.5.0",
+    "css-loader": "6.9.1",
+    "eslint": "10.4.0",
+    "mini-css-extract-plugin": "2.9.4",
+    "postcss": "8.5.15",
+    "postcss-loader": "8.2.1",
+    "webpack": "5.106.2",
+    "webpack-cli": "5.1.4"
+  }
+}
