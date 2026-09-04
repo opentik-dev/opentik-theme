@@ -69,9 +69,6 @@ if (!function_exists('opentik_customize_register')) {
             ]);
         }
 
-        // Add Section for Single Post Settings
-
-
         // --- Pages Settings ---
         $wp_customize->add_section('opentik_pages_section', [
             'title' => esc_html__('إعدادات الصفحات', 'opentik'),
@@ -328,5 +325,3 @@ if (!function_exists('opentik_inject_analytics_scripts')) {
     }
     add_action('wp_head', 'opentik_inject_analytics_scripts', 99);
 }
-
-// Removed customizer includes to functions.php

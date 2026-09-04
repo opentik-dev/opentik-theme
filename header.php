@@ -41,8 +41,9 @@
 <!-- Primary Header -->
 <?php
 $header_py = get_theme_mod('opentik_header_padding_y', 3);
+$header_py_px = max(0, absint($header_py)) * 4;
 ?>
-<header class="site-header sticky top-0 z-40 backdrop-blur-md px-4 py-<?php echo esc_attr($header_py); ?> border-b border-white/5 transition-all duration-300">
+<header class="site-header sticky top-0 z-40 backdrop-blur-md px-4 border-b border-white/5 transition-all duration-300" style="padding-top: <?php echo esc_attr($header_py_px); ?>px; padding-bottom: <?php echo esc_attr($header_py_px); ?>px;">
     <div class="site-content">
         <div class="site-navigation flex items-center justify-between gap-4 py-0">
             <!-- Branding & Logo -->
@@ -104,7 +105,7 @@ $header_py = get_theme_mod('opentik_header_padding_y', 3);
             }
             ?>
             <div class="site-branding group flex flex-col justify-center">
-                <a href="<?php echo esc_url(home_url('/')); ?>" class="brand-link flex <?php echo esc_attr($flex_dir); ?> items-center gap-<?php echo esc_attr($title_gap); ?>">
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="brand-link flex <?php echo esc_attr($flex_dir); ?> items-center" style="gap: <?php echo esc_attr(max(0, absint($title_gap)) * 4); ?>px;">
                     <?php if (has_custom_logo()) : ?>
                         <div class="custom-logo-wrapper transition-all duration-500 md:group-hover:scale-105 md:group-hover:drop-shadow-[0_0_10px_rgba(250,204,21,0.3)] flex-shrink-0" style="max-height: <?php echo esc_attr($logo_size); ?>px;">
                             <?php 

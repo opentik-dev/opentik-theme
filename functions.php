@@ -25,41 +25,44 @@ function opentik_enqueue_assets(): void
         );
     }
 
-    // PrismJS Syntax Highlighter (Okaidia Dark Theme)
-    wp_enqueue_style(
-        'prismjs-theme',
-        'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css',
-        [],
-        '1.29.0'
-    );
+    // PrismJS loaded only for posts/pages that actually contain code
+    $prism_dependencies = [];
+    if (opentik_needs_prism()) {
+        wp_enqueue_style(
+            'prismjs-theme',
+            'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css',
+            [],
+            '1.29.0'
+        );
+
+        wp_enqueue_script(
+            'prismjs-core',
+            'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js',
+            [],
+            '1.29.0',
+            true
+        );
+
+        wp_enqueue_script(
+            'prismjs-autoloader',
+            'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js',
+            ['prismjs-core'],
+            '1.29.0',
+            true
+        );
+
+        $prism_dependencies = ['prismjs-autoloader'];
+    }
 
     if (file_exists($js_path)) {
         wp_enqueue_script(
             'opentik-main',
             get_template_directory_uri() . '/assets/dist/js/main.js',
-            ['prismjs-autoloader'],
+            $prism_dependencies,
             filemtime($js_path),
             true
         );
     }
-    
-    // PrismJS Core Script
-    wp_enqueue_script(
-        'prismjs-core',
-        'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js',
-        [],
-        '1.29.0',
-        true
-    );
-    
-    // PrismJS Autoloader Plugin (loads syntax languages on demand)
-    wp_enqueue_script(
-        'prismjs-autoloader',
-        'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js',
-        ['prismjs-core'],
-        '1.29.0',
-        true
-    );
 }
 
 // Modify Main Query for Posts Per Page

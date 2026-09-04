@@ -71,7 +71,7 @@ if ($popular_query->have_posts()) :
                         <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                     </h4>
                     <div class="flex items-center gap-2 mt-1.5 text-xs text-slate-400">
-                        <span>💬 <?php comments_number('0 تعليق', 'تعليق واحد', '% تعليقات'); ?></span>
+                        <span>💬 <?php comments_number(esc_html__('0 تعليق', 'opentik'), esc_html__('تعليق واحد', 'opentik'), esc_html__('% تعليقات', 'opentik')); ?></span>
                     </div>
                 </div>
             </div>

@@ -26,17 +26,6 @@ if (!function_exists('opentik_log')) {
             return;
         }
 
-        $log_file = $log_dir . '/opentik.log';
-        $command = sprintf(
-            'php -r %s > /dev/null 2>&1 &',
-            escapeshellarg('file_put_contents(' . var_export($log_file, true) . ', ' . var_export($json . PHP_EOL, true) . ', FILE_APPEND | LOCK_EX);')
-        );
-
-        if (function_exists('shell_exec')) {
-            @shell_exec($command);
-            return;
-        }
-
-        @file_put_contents($log_file, $json . PHP_EOL, FILE_APPEND | LOCK_EX);
+        @file_put_contents($log_dir . '/opentik.log', $json . PHP_EOL, FILE_APPEND | LOCK_EX);
     }
 }
