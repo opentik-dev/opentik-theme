@@ -8,7 +8,7 @@
     "dev": "webpack --watch --mode development",
     "lint": "eslint assets/src/js --ext .js",
     "verify": "node verify-build.js",
-    "package": "zip -r opentik-theme.zip assets/dist inc parts index.php home.php single.php page.php archive.php search.php header.php footer.php functions.php style.css README.md screenshot.png"
+    "package": "node package-build.js"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.0",
