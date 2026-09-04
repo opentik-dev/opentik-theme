@@ -34,14 +34,7 @@ if (have_posts()) :
                             <!-- Category -->
                             <div class="mb-4">
                                 <span class="bg-yellow-400 text-slate-950 text-xs font-extrabold px-3.5 py-1.5 rounded-full shadow-lg inline-block">
-                                    <?php 
-                                    $categories = get_the_category();
-                                    if (!empty($categories)) {
-                                        echo esc_html($categories[0]->name);
-                                    } else {
-                                        esc_html_e('تقنية', 'opentik');
-                                    }
-                                    ?>
+                                    <?php echo esc_html(opentik_first_category_name()); ?>
                                 </span>
                             </div>
                             
@@ -59,7 +52,7 @@ if (have_posts()) :
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
                                     </button>
                                 </span>
-                                <span class="border-r border-white/20 pr-4 flex items-center gap-1.5">💬 <?php comments_number('لا توجد تعليقات', 'تعليق واحد', '% تعليقات'); ?></span>
+                                <span class="border-r border-white/20 pr-4 flex items-center gap-1.5">💬 <?php comments_number(esc_html__('لا توجد تعليقات', 'opentik'), esc_html__('تعليق واحد', 'opentik'), esc_html__('% تعليقات', 'opentik')); ?></span>
                             </div>
                         </div>
                     </div>
@@ -74,14 +67,7 @@ if (have_posts()) :
                     <?php if (!$is_behind) : ?>
                         <div class="mb-4">
                             <span class="bg-yellow-400 text-slate-950 text-xs font-extrabold px-3 py-1 rounded-full shadow-lg">
-                                <?php 
-                                $categories = get_the_category();
-                                if (!empty($categories)) {
-                                    echo esc_html($categories[0]->name);
-                                } else {
-                                    esc_html_e('تقنية', 'opentik');
-                                }
-                                ?>
+                                <?php echo esc_html(opentik_first_category_name()); ?>
                             </span>
                         </div>
                         
@@ -95,11 +81,11 @@ if (have_posts()) :
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
                                 </button>
                             </span>
-                            <span class="border-r border-white/10 pr-4 flex items-center gap-1">💬 <?php comments_number('لا توجد تعليقات', 'تعليق واحد', '% تعليقات'); ?></span>
+                            <span class="border-r border-white/10 pr-4 flex items-center gap-1">💬 <?php comments_number(esc_html__('لا توجد تعليقات', 'opentik'), esc_html__('تعليق واحد', 'opentik'), esc_html__('% تعليقات', 'opentik')); ?></span>
                         </div>
 
                         <?php if ($has_thumbnail): ?>
-                            <div class="mb-8 overflow-hidden rounded-2xl border border-white/8 shadow-2xl">
+                            <div class="mb-8 overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
                                 <?php the_post_thumbnail('large', ['class' => 'w-full h-auto object-cover transform hover:scale-102 transition-transform duration-700']); ?>
                             </div>
                         <?php endif; ?>
@@ -193,6 +179,18 @@ if (have_posts()) :
                         data-page-title="<?php echo esc_attr(get_the_title()); ?>"
                         data-theme="dark"
                     ></div>
+                    <script>
+                        (function() {
+                            try {
+                                var saved = localStorage.getItem('opentik-theme');
+                                if (saved === 'light') {
+                                    document.getElementById('cusdis_thread').setAttribute('data-theme', 'light');
+                                } else {
+                                    document.getElementById('cusdis_thread').setAttribute('data-theme', 'dark');
+                                }
+                            } catch (e) {}
+                        })();
+                    </script>
                     <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
                     <script>
                         // Fallback & Enhancement script to guarantee Cusdis iframe resizes perfectly

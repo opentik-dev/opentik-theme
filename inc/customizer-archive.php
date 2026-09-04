@@ -48,6 +48,18 @@ function opentik_customize_register_archive($wp_customize) {
         'input_attrs' => ['min' => 0, 'max' => 100],
     ]);
 
+    // Homepage Slider
+    $wp_customize->add_setting('opentik_show_home_slider', [
+        'default' => true,
+        'sanitize_callback' => 'opentik_sanitize_checkbox',
+    ]);
+    $wp_customize->add_control('opentik_show_home_slider', [
+        'label' => esc_html__('إظهار السلايدر الرئيسي', 'opentik'),
+        'section' => 'static_front_page',
+        'type' => 'checkbox',
+        'description' => esc_html__('عند إيقافه يختفي السلايدر من الصفحة الرئيسية ويُوفَّر استعلام إضافي.', 'opentik'),
+    ]);
+
     // Read More Button
     $wp_customize->add_setting('opentik_read_more_visibility', [
         'default' => false,

@@ -19,11 +19,11 @@ if ($slider_query->have_posts()) :
         $idx = 0;
         while ($slider_query->have_posts()) : $slider_query->the_post(); 
             $active_class = ($idx === 0) ? 'active' : '';
-            $thumb_url = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'large') : 'https://picsum.photos/1200/600';
+            $thumb_url = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'large') : '';
         ?>
             <div class="slider-slide absolute inset-0 w-full h-full opacity-0 pointer-events-none transition-all duration-700 ease-in-out flex items-end <?php echo $active_class; ?>" data-index="<?php echo $idx; ?>">
                 <!-- Background Image with Ken Burns Scale Effect -->
-                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] scale-100 slide-bg" style="background-image: url('<?php echo esc_url($thumb_url); ?>');">
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] scale-100 slide-bg <?php echo $thumb_url ? '' : 'bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950'; ?>" <?php echo $thumb_url ? 'style="background-image: url(\'' . esc_url($thumb_url) . '\');"' : ''; ?>>
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-transparent"></div>
                 </div>
                 
@@ -31,14 +31,7 @@ if ($slider_query->have_posts()) :
                 <div class="relative z-10 p-6 md:p-12 w-full max-w-3xl text-right">
                     <div class="flex items-center gap-3 mb-3">
                         <span class="bg-yellow-400 text-slate-950 text-xs font-extrabold px-3 py-1 rounded-full shadow-lg">
-                            <?php 
-                            $categories = get_the_category();
-                            if (!empty($categories)) {
-                                echo esc_html($categories[0]->name);
-                            } else {
-                                esc_html_e('تقنية', 'opentik');
-                            }
-                            ?>
+                            <?php echo esc_html(opentik_first_category_name()); ?>
                         </span>
                         <span class="text-xs text-slate-300 font-semibold backdrop-blur-sm bg-slate-900/30 px-2 py-0.5 rounded border border-white/5"><?php echo get_the_date(); ?></span>
                     </div>

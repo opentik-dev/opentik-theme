@@ -147,20 +147,11 @@ $header_py = get_theme_mod('opentik_header_padding_y', 3);
                 } else {
                     ?>
                     <ul class="flex flex-wrap gap-6 text-sm font-semibold">
-                        <li>
-                            <a href="<?php echo esc_url(home_url('/')); ?>" class="<?php echo is_front_page() ? 'active' : ''; ?>">
-                                <?php esc_html_e('الرئيسية', 'opentik'); ?>
-                            </a>
-                        </li>
                         <?php
-                        $pages = get_pages([
-                            'sort_column' => 'menu_order',
-                            'sort_order' => 'ASC',
-                            'number' => 5
-                        ]);
-                        foreach ($pages as $page) {
-                            $active_class = is_page($page->ID) ? 'active' : '';
-                            echo '<li><a href="' . esc_url(get_permalink($page->ID)) . '" class="' . $active_class . '">' . esc_html($page->post_title) . '</a></li>';
+                        $menu_items = opentik_fallback_menu_items(5);
+                        foreach ($menu_items as $item) {
+                            $active_class = $item['active'] ? 'active' : '';
+                            echo '<li><a href="' . esc_url($item['url']) . '" class="' . $active_class . '">' . esc_html($item['title']) . '</a></li>';
                         }
                         ?>
                     </ul>
@@ -259,20 +250,11 @@ $header_py = get_theme_mod('opentik_header_padding_y', 3);
             } else {
                 ?>
                 <ul class="flex flex-col gap-4 text-base font-bold">
-                    <li>
-                        <a href="<?php echo esc_url(home_url('/')); ?>" class="<?php echo is_front_page() ? 'active' : ''; ?>">
-                            <?php esc_html_e('الرئيسية', 'opentik'); ?>
-                        </a>
-                    </li>
                     <?php
-                    $mobile_pages = get_pages([
-                        'sort_column' => 'menu_order',
-                        'sort_order' => 'ASC',
-                        'number' => 5
-                    ]);
-                    foreach ($mobile_pages as $page) {
-                        $active_class = is_page($page->ID) ? 'active' : '';
-                        echo '<li><a href="' . esc_url(get_permalink($page->ID)) . '" class="' . $active_class . '">' . esc_html($page->post_title) . '</a></li>';
+                    $menu_items = opentik_fallback_menu_items(5);
+                    foreach ($menu_items as $item) {
+                        $active_class = $item['active'] ? 'active' : '';
+                        echo '<li><a href="' . esc_url($item['url']) . '" class="' . $active_class . '">' . esc_html($item['title']) . '</a></li>';
                     }
                     ?>
                 </ul>
