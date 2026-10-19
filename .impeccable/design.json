@@ -1,0 +1,31 @@
+{
+  "northStar": "مجلة تقنية عربية هادئة وواثقة داخل ليلة كحلية",
+  "elevation": {
+    "strategy": "layered",
+    "tokens": {
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3)",
+      "glow": "0 0 15px rgba(250, 204, 21, 0.15)"
+    }
+  },
+  "motion": {
+    "preferredEase": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "reducedMotion": "preserve state changes without decorative movement"
+  },
+  "breakpoints": {
+    "mobile": "< 768px",
+    "desktop": ">= 768px"
+  },
+  "rules": {
+    "goldenScarcity": "Use yellow/amber as an editorial signal, not as a surface default.",
+    "singleSurface": "Prefer one depth cue per component: border or shadow; reserve blur for overlays.",
+    "readingFirst": "Arabic reading hierarchy outranks decorative motion and effects."
+  },
+  "knownDrift": [
+    "Repeated hard-coded Tailwind colors in PHP templates",
+    "Legacy rounded and glass styles remain in PHP templates",
+    "Overuse of glass, blur, glow, and rounded containers",
+    "Newsletter UI has no confirmed backend integration"
+  ]
+}

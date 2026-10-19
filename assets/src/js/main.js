@@ -5,21 +5,29 @@ const toggleMenu = () => {
   const drawer = document.getElementById('mobile-drawer');
   const backdrop = document.getElementById('drawer-backdrop');
   const closeBtn = document.getElementById('drawer-close-btn');
+  let previousFocus = null;
 
   if (!button || !drawer || !backdrop) {
     return;
   }
 
   const openDrawer = () => {
+    previousFocus = document.activeElement;
     drawer.classList.add('is-active');
     backdrop.classList.add('is-active');
+    button.setAttribute('aria-expanded', 'true');
+    drawer.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    closeBtn?.focus();
   };
 
   const closeDrawer = () => {
     drawer.classList.remove('is-active');
     backdrop.classList.remove('is-active');
+    button.setAttribute('aria-expanded', 'false');
+    drawer.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    previousFocus?.focus();
   };
 
   button.addEventListener('click', (e) => {
@@ -59,6 +67,7 @@ const initSlider = () => {
 
   let currentIndex = 0;
   let timer = null;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const intervalTime = 5000;
 
   const showSlide = (index) => {
@@ -133,7 +142,7 @@ const initSlider = () => {
   slider.addEventListener('mouseleave', startAutoPlay);
 
   showSlide(0);
-  startAutoPlay();
+  if (!reduceMotion) startAutoPlay();
 };
 
 const initReadingProgress = () => {
@@ -171,6 +180,15 @@ const initNewsletter = () => {
       const email = input.value.trim();
       if (!email) return;
 
+      if (!form.dataset.endpoint) {
+        if (msg) {
+          msg.textContent = 'النشرة البريدية قيد التجهيز وستتوفر قريباً.';
+          msg.classList.remove('hidden', 'text-green-400');
+          msg.classList.add('text-slate-400');
+        }
+        return;
+      }
+
       const originalText = button.textContent;
       button.disabled = true;
       button.textContent = 'جاري الاشتراك...';
@@ -180,7 +198,7 @@ const initNewsletter = () => {
         button.disabled = false;
 
         if (msg) {
-          msg.textContent = '✓ شكراً لاهتمامك! تم تسجيل بريدك الإلكتروني بنجاح.';
+          msg.textContent = 'تم إرسال طلب الاشتراك.';
           msg.classList.remove('hidden');
           setTimeout(() => {
             msg.classList.add('hidden');
@@ -233,11 +251,15 @@ const initSearchOverlay = () => {
   const closeBtn = document.getElementById('search-close-btn');
   const overlay = document.getElementById('fullscreen-search-overlay');
   const input = document.getElementById('search-input-overlay');
+  let previousFocus = null;
 
   if (!overlay || !input) return;
 
   const openOverlay = () => {
+    previousFocus = document.activeElement;
     overlay.classList.add('is-active');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
     setTimeout(() => {
       input.focus();
     }, 100);
@@ -245,7 +267,10 @@ const initSearchOverlay = () => {
 
   const closeOverlay = () => {
     overlay.classList.remove('is-active');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
     input.value = '';
+    previousFocus?.focus();
   };
 
   openBtns.forEach((btn) => {
@@ -409,11 +434,11 @@ const initReadingMode = () => {
       // Update icon based on state
       const isReadingMode = document.body.classList.contains('reading-mode');
       if (isReadingMode) {
-        btn.classList.add('bg-yellow-400', 'text-slate-900');
+        btn.classList.add('bg-yellow-400', 'text-black');
         btn.classList.remove('bg-white/10', 'bg-slate-900', 'text-slate-200', 'text-slate-400');
         btn.title = 'إلغاء وضع القراءة';
       } else {
-        btn.classList.remove('bg-yellow-400', 'text-slate-900');
+        btn.classList.remove('bg-yellow-400', 'text-black');
         // We restore original classes depending if it was the hero layout or standard
         if (btn.closest('.post-meta-hero')) {
           btn.classList.add('bg-white/10', 'text-slate-200');
@@ -423,6 +448,109 @@ const initReadingMode = () => {
         btn.title = 'تفعيل وضع القراءة المريح';
       }
     });
+  });
+};
+
+const initComments = () => {
+  const container = document.getElementById('opentik-comments');
+  const form = document.getElementById('opentik-comment-form');
+  const list = document.getElementById('opentik-comments-list');
+  const status = document.getElementById('opentik-comment-status');
+  const countElements = document.querySelectorAll('[data-comments-count]');
+
+  if (!container || !form || !list || !status) return;
+
+  const apiUrl = container.dataset.commentsApi;
+  const slug = container.dataset.commentsSlug || window.location.pathname;
+  const nameInput = document.getElementById('opentik-comment-name');
+  const commentInput = document.getElementById('opentik-comment-text');
+  const honeypot = document.getElementById('opentik-comment-honeypot');
+
+  const renderComment = (comment) => {
+    const item = document.createElement('article');
+    item.className = 'rounded-2xl border border-white/10 bg-slate-950/30 p-4';
+
+    const header = document.createElement('div');
+    header.className = 'flex flex-wrap items-center gap-2 text-sm';
+
+    const author = document.createElement('strong');
+    author.className = 'text-yellow-400';
+    author.textContent = comment.author_name || 'زائر';
+
+    const date = document.createElement('time');
+    date.className = 'text-slate-500';
+    date.dateTime = comment.created_at || '';
+    date.textContent = comment.created_at
+      ? new Date(comment.created_at).toLocaleDateString('ar')
+      : '';
+
+    const body = document.createElement('p');
+    body.className = 'mt-2 whitespace-pre-wrap text-slate-200';
+    body.textContent = comment.comment || '';
+
+    header.append(author, date);
+    item.append(header, body);
+    return item;
+  };
+
+  const loadComments = async () => {
+    const response = await fetch(`${apiUrl}?slug=${encodeURIComponent(slug)}`);
+    if (!response.ok) throw new Error('تعذر تحميل التعليقات.');
+
+    const comments = await response.json();
+    const count = comments.length;
+    const countLabel = count === 0 ? 'لا توجد تعليقات' : count === 1 ? 'تعليق واحد' : `${count} تعليقات`;
+    countElements.forEach((element) => {
+      element.textContent = countLabel;
+    });
+    list.replaceChildren();
+
+    if (!comments.length) {
+      const empty = document.createElement('p');
+      empty.className = 'text-slate-400';
+      empty.textContent = 'لا توجد تعليقات بعد.';
+      list.append(empty);
+      return;
+    }
+
+    comments.forEach((comment) => list.append(renderComment(comment)));
+  };
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    status.textContent = 'جارٍ إرسال التعليق...';
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          slug,
+          name: nameInput.value.trim(),
+          comment: commentInput.value.trim(),
+          honeypot: honeypot.value
+        })
+      });
+
+      if (!response.ok) {
+        const result = await response.json().catch(() => ({}));
+        throw new Error(result.error || 'تعذر إرسال التعليق.');
+      }
+
+      form.reset();
+      status.textContent = 'تم إرسال التعليق.';
+      await loadComments();
+    } catch (error) {
+      status.textContent = error.message || 'تعذر الاتصال بخدمة التعليقات.';
+    }
+  });
+
+  loadComments().catch((error) => {
+    list.replaceChildren();
+    const message = document.createElement('p');
+    message.className = 'text-slate-400';
+    message.textContent = error.message;
+    list.append(message);
   });
 };
 
@@ -436,4 +564,5 @@ window.addEventListener('DOMContentLoaded', () => {
   initThemeSwitcher();
   initInteractiveCodeBlocks();
   initReadingMode();
+  initComments();
 });

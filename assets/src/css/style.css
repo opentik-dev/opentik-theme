@@ -60,7 +60,7 @@ html.light {
   body {
     margin: 0;
     min-height: 100vh;
-    font-family: "Inter", "Segoe UI", sans-serif;
+    font-family: Tahoma, "Segoe UI", sans-serif;
     background: var(--bg-body);
     background-size: 400% 400% !important;
     animation: silkGradientMove 24s ease infinite;
@@ -98,6 +98,11 @@ html.light {
     outline: none;
     box-shadow: var(--shadow-glow);
   }
+
+  :where(a, button, input, textarea, select):focus-visible {
+    outline: 3px solid var(--text-accent);
+    outline-offset: 3px;
+  }
 }
 
 @layer components {
@@ -123,7 +128,7 @@ html.light {
   
   /* Top Utility Bar Logo Hover Transitions */
   .utility-logo-link img {
-    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   }
   
   .utility-logo-link:hover img {
@@ -169,7 +174,7 @@ html.light {
   .custom-logo-container .custom-logo-link {
     display: inline-flex;
     align-items: center;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
   
   .custom-logo-container .custom-logo-link:hover {
@@ -278,19 +283,20 @@ html.light {
     content: '';
     position: absolute;
     bottom: -2px;
-    left: 50%;
-    width: 0;
+    left: 0;
+    width: 100%;
     height: 2px;
     background-color: var(--text-accent);
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     border-radius: 9999px;
   }
   
   .main-navigation a:hover::after,
   .main-navigation .current-menu-item > a::after,
   .main-navigation a.active::after {
-    width: 100%;
-    left: 0;
+    transform: scaleX(1);
   }
   
   .main-navigation a:hover,
@@ -307,8 +313,8 @@ html.light {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.25rem !important; /* 36px */
-    height: 2.25rem !important; /* 36px */
+    width: 2.75rem !important; /* 44px touch target */
+    height: 2.75rem !important; /* 44px touch target */
     padding: 0 !important; /* Stop SVG squishing! */
     border-radius: 0.75rem;
     cursor: pointer;
@@ -320,6 +326,14 @@ html.light {
     color: var(--text-accent) !important;
     box-shadow: var(--shadow-glow);
     transform: scale(1.05);
+  }
+
+  .search-toggle-btn,
+  #theme-toggle-btn,
+  #drawer-close-btn,
+  .reading-mode-toggle {
+    min-width: 44px;
+    min-height: 44px;
   }
 
   /* Actions Drawer Buttons Override */
@@ -405,7 +419,9 @@ html.light {
   
   .widget-title {
     color: var(--text-main) !important;
-    border-right: 4px solid var(--text-accent) !important;
+    border-right: 0 !important;
+    border-bottom: 2px solid var(--text-accent) !important;
+    padding-bottom: 0.5rem;
   }
 
   /* Sidebar widget inner elements overrides for perfect theme contrast */
@@ -526,8 +542,10 @@ html.light {
     font-weight: 850;
     margin-top: 2.2rem;
     margin-bottom: 1rem;
-    border-right: 4px solid var(--text-accent) !important;
-    padding-right: 0.75rem;
+    border-right: 0 !important;
+    border-bottom: 2px solid var(--text-accent) !important;
+    padding-right: 0;
+    padding-bottom: 0.5rem;
   }
 
   .prose a,
@@ -554,7 +572,7 @@ html.light {
   
   /* Premium Dark/Light Theme Switching Rotating Icon Animation */
   #theme-toggle-btn svg {
-    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
   }
   
   #theme-toggle-btn:hover svg {
@@ -563,7 +581,7 @@ html.light {
   
   html.light #theme-toggle-btn .moon-icon {
     display: block !important;
-    animation: scaleRotateIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation: scaleRotateIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   
   html.light #theme-toggle-btn .sun-icon {
@@ -572,7 +590,7 @@ html.light {
   
   html.dark #theme-toggle-btn .sun-icon {
     display: block !important;
-    animation: scaleRotateIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation: scaleRotateIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   
   html.dark #theme-toggle-btn .moon-icon {
@@ -617,7 +635,7 @@ html.light {
   }
   
   #search-close-btn {
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, color 0.3s ease;
   }
   
   #search-close-btn:hover {
@@ -952,6 +970,21 @@ html.light {
     background-color: #facc15 !important;
     color: #0f172a !important;
     border-color: #facc15 !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
   }
   
   /* --- Print & PDF Export Styles --- */

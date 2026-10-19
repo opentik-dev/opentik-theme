@@ -17,6 +17,7 @@
     <?php wp_head(); ?>
 </head>
 <body <?php body_class('site-wrapper'); ?>>
+<?php wp_body_open(); ?>
 <a class="screen-reader-text" href="#content"><?php esc_html_e('تخطي إلى المحتوى', 'opentik'); ?></a>
 
 <!-- Top Utility Date & Clock Bar -->
@@ -194,7 +195,7 @@ $header_py = get_theme_mod('opentik_header_padding_y', 3);
                 </button>
 
                 <!-- Mobile Menu Button -->
-                <button class="menu-toggle md:hidden w-9 h-9 rounded-xl flex items-center justify-center border border-white/5 bg-slate-900/40 text-slate-300 hover:text-white transition-all duration-300" type="button" aria-label="<?php esc_attr_e('القائمة', 'opentik'); ?>">
+                <button class="menu-toggle md:hidden w-9 h-9 rounded-xl flex items-center justify-center border border-white/5 bg-slate-900/40 text-slate-300 hover:text-white transition-all duration-300" type="button" aria-label="<?php esc_attr_e('القائمة', 'opentik'); ?>" aria-controls="mobile-drawer" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
@@ -205,7 +206,7 @@ $header_py = get_theme_mod('opentik_header_padding_y', 3);
 </header>
 
 <!-- Full-screen Search Overlay -->
-<div id="fullscreen-search-overlay" class="search-overlay fixed inset-0 z-50 flex items-center justify-center bg-slate-950/95 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-300">
+<div id="fullscreen-search-overlay" class="search-overlay fixed inset-0 z-50 flex items-center justify-center bg-slate-950/95 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-300" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e('البحث في الموقع', 'opentik'); ?>" aria-hidden="true">
     <button id="search-close-btn" class="absolute top-6 left-6 w-12 h-12 rounded-full border border-white/10 hover:border-yellow-400/30 flex items-center justify-center text-white hover:text-yellow-400 hover:rotate-90 transition-all duration-300 cursor-pointer" aria-label="<?php esc_attr_e('إغلاق', 'opentik'); ?>">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -223,7 +224,7 @@ $header_py = get_theme_mod('opentik_header_padding_y', 3);
 </div>
 
 <!-- Mobile Navigation Drawer (Off-canvas) -->
-<div id="mobile-drawer" class="mobile-drawer flex flex-col shadow-2xl">
+<div id="mobile-drawer" class="mobile-drawer flex flex-col shadow-2xl" aria-hidden="true">
     <!-- Close Button & Header -->
     <div class="flex items-center justify-between p-6 border-b border-white/5">
         <div class="drawer-branding flex items-center">
@@ -347,4 +348,3 @@ $header_py = get_theme_mod('opentik_header_padding_y', 3);
 <div id="drawer-backdrop" class="drawer-backdrop fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-500"></div>
 
 <main id="content" class="site-content" role="main">
-

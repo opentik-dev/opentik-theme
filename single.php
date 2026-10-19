@@ -33,7 +33,7 @@ if (have_posts()) :
                         <div class="relative z-10">
                             <!-- Category -->
                             <div class="mb-4">
-                                <span class="bg-yellow-400 text-slate-950 text-xs font-extrabold px-3.5 py-1.5 rounded-full shadow-lg inline-block">
+                                <span class="bg-yellow-400 text-black text-xs font-extrabold px-3.5 py-1.5 rounded-full shadow-lg inline-block">
                                     <?php 
                                     $categories = get_the_category();
                                     if (!empty($categories)) {
@@ -55,11 +55,11 @@ if (have_posts()) :
                                 <span class="flex items-center gap-1.5"><?php opentik_posted_on(); ?></span>
                                 <span class="border-r border-white/20 pr-4 flex items-center gap-1.5">
                                     ⏱️ <?php echo opentik_estimated_reading_time(); ?> <?php esc_html_e('دقائق قراءة', 'opentik'); ?>
-                                    <button class="reading-mode-toggle ml-2 flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-yellow-400 hover:text-slate-900 transition-all duration-300 cursor-pointer shadow-lg" title="<?php esc_attr_e('تفعيل وضع القراءة المريح', 'opentik'); ?>">
+                                    <button class="reading-mode-toggle ml-2 flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-yellow-400 hover:text-black transition-all duration-300 cursor-pointer shadow-lg" title="<?php esc_attr_e('تفعيل وضع القراءة المريح', 'opentik'); ?>">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
                                     </button>
                                 </span>
-                                <span class="border-r border-white/20 pr-4 flex items-center gap-1.5">💬 <?php comments_number('لا توجد تعليقات', 'تعليق واحد', '% تعليقات'); ?></span>
+                                <span class="border-r border-white/20 pr-4 flex items-center gap-1.5">💬 <span class="opentik-comments-count" data-comments-count>جارٍ التحقق...</span></span>
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@ if (have_posts()) :
                 <article class="prose prose-invert max-w-none">
                     <?php if (!$is_behind) : ?>
                         <div class="mb-4">
-                            <span class="bg-yellow-400 text-slate-950 text-xs font-extrabold px-3 py-1 rounded-full shadow-lg">
+                            <span class="bg-yellow-400 text-black text-xs font-extrabold px-3 py-1 rounded-full shadow-lg">
                                 <?php 
                                 $categories = get_the_category();
                                 if (!empty($categories)) {
@@ -91,11 +91,11 @@ if (have_posts()) :
                             <span><?php opentik_posted_on(); ?></span>
                             <span class="border-r border-white/10 pr-4 flex items-center gap-1">
                                 ⏱️ <?php echo opentik_estimated_reading_time(); ?> <?php esc_html_e('دقائق قراءة', 'opentik'); ?>
-                                <button class="reading-mode-toggle ml-2 flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-white/10 hover:bg-yellow-400 hover:text-slate-900 transition-all duration-300 cursor-pointer shadow-sm" title="<?php esc_attr_e('تفعيل وضع القراءة المريح', 'opentik'); ?>">
+                                    <button class="reading-mode-toggle ml-2 flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 border border-white/10 hover:bg-yellow-400 hover:text-black transition-all duration-300 cursor-pointer shadow-sm" title="<?php esc_attr_e('تفعيل وضع القراءة المريح', 'opentik'); ?>">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
                                 </button>
                             </span>
-                            <span class="border-r border-white/10 pr-4 flex items-center gap-1">💬 <?php comments_number('لا توجد تعليقات', 'تعليق واحد', '% تعليقات'); ?></span>
+                            <span class="border-r border-white/10 pr-4 flex items-center gap-1">💬 <span class="opentik-comments-count" data-comments-count>جارٍ التحقق...</span></span>
                         </div>
 
                         <?php if ($has_thumbnail): ?>
@@ -175,58 +175,43 @@ if (have_posts()) :
                 endif; 
                 ?>
 
-                <!-- Cusdis Comments Section -->
-                <?php if (get_theme_mod('opentik_show_comments', true)) : 
-                    $cusdis_id = get_theme_mod('opentik_cusdis_app_id');
-                    if (!empty($cusdis_id)) :
-                ?>
-                <div class="comments-container mt-12 mb-8 bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-6 md:p-10 shadow-2xl w-full">
-                    <h3 class="text-2xl font-extrabold text-white mb-8 flex items-center gap-3">
+                <!-- Cloudflare D1 Comments Section -->
+                <?php if (get_theme_mod('opentik_show_comments', true)) : ?>
+                <section
+                    id="opentik-comments"
+                    class="comments-container mt-12 mb-8 bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-6 md:p-10 shadow-2xl w-full"
+                    data-comments-api="<?php echo esc_url(get_theme_mod('opentik_comments_api_url', 'https://comments-api.opentik.win/comments')); ?>"
+                    data-comments-slug="<?php echo esc_attr(wp_parse_url(get_permalink(), PHP_URL_PATH) ?: '/'); ?>"
+                    aria-labelledby="opentik-comments-title"
+                >
+                    <h2 id="opentik-comments-title" class="text-2xl font-extrabold text-white mb-8 flex items-center gap-3">
                         <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
                         <?php esc_html_e('التعليقات', 'opentik'); ?>
-                    </h3>
-                    <div id="cusdis_thread" class="w-full" style="min-height: 350px;"
-                        data-host="https://cusdis.com"
-                        data-app-id="<?php echo esc_attr($cusdis_id); ?>"
-                        data-page-id="<?php the_ID(); ?>"
-                        data-page-url="<?php echo esc_url(get_permalink()); ?>"
-                        data-page-title="<?php echo esc_attr(get_the_title()); ?>"
-                        data-theme="dark"
-                    ></div>
-                    <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
-                    <script>
-                        // Fallback & Enhancement script to guarantee Cusdis iframe resizes perfectly
-                        window.addEventListener('message', function(e) {
-                            try {
-                                const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-                                if (data && data.msg === 'resize' && data.height) {
-                                    const cusdisIframe = document.querySelector('#cusdis_thread iframe');
-                                    if (cusdisIframe) {
-                                        // Force height + extra padding to completely eliminate scrollbars
-                                        const newHeight = parseInt(data.height) + 30;
-                                        cusdisIframe.style.height = newHeight + 'px';
-                                        cusdisIframe.style.minHeight = newHeight + 'px';
-                                        cusdisIframe.style.overflow = 'hidden';
-                                    }
-                                }
-                            } catch (err) {}
-                        });
-                        
-                        // Ensure iframe doesn't start too small
-                        const checkIframe = setInterval(() => {
-                            const iframe = document.querySelector('#cusdis_thread iframe');
-                            if (iframe) {
-                                iframe.style.minHeight = '350px';
-                                iframe.style.overflow = 'hidden';
-                                clearInterval(checkIframe);
-                            }
-                        }, 500);
-                    </script>
-                </div>
-                <?php 
-                    endif;
-                endif; 
-                ?>
+                    </h2>
+
+                    <div id="opentik-comments-list" class="space-y-4 mb-8" aria-live="polite">
+                        <p class="text-slate-400"><?php esc_html_e('جارٍ تحميل التعليقات...', 'opentik'); ?></p>
+                    </div>
+
+                    <form id="opentik-comment-form" class="space-y-4" novalidate>
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <label class="sr-only" for="opentik-comment-name"><?php esc_html_e('الاسم', 'opentik'); ?></label>
+                            <input id="opentik-comment-name" name="name" type="text" maxlength="50" required
+                                class="w-full px-4 py-3" placeholder="<?php esc_attr_e('اسمك', 'opentik'); ?>">
+                            <label class="sr-only" for="opentik-comment-text"><?php esc_html_e('التعليق', 'opentik'); ?></label>
+                        </div>
+                        <textarea id="opentik-comment-text" name="comment" rows="4" maxlength="2000" required
+                            class="w-full px-4 py-3" placeholder="<?php esc_attr_e('اكتب تعليقك...', 'opentik'); ?>"></textarea>
+                        <input id="opentik-comment-honeypot" name="website" type="text" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+                        <div class="flex flex-wrap items-center gap-4">
+                            <button type="submit" class="px-5 py-3 rounded-xl bg-yellow-400 text-slate-950 font-bold hover:bg-yellow-300 transition-colors">
+                                <?php esc_html_e('إرسال التعليق', 'opentik'); ?>
+                            </button>
+                            <p id="opentik-comment-status" class="text-sm text-slate-400" role="status"></p>
+                        </div>
+                    </form>
+                </section>
+                <?php endif; ?>
             </div>
 
             <!-- Sidebar -->
@@ -241,4 +226,3 @@ else :
 endif;
 
 get_footer();
-

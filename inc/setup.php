@@ -123,11 +123,11 @@ if (!function_exists('opentik_customize_register')) {
             'type' => 'text',
         ]);
 
-        // --- Cusdis Comments Settings ---
+        // --- Cloudflare D1 Comments Settings ---
         $wp_customize->add_section('opentik_comments_section', [
-            'title' => esc_html__('إعدادات التعليقات (Cusdis)', 'opentik'),
+            'title' => esc_html__('إعدادات التعليقات (Cloudflare D1)', 'opentik'),
             'priority' => 35,
-            'description' => esc_html__('إعدادات دمج منصة التعليقات الخفيفة والآمنة Cusdis أسفل المقالات.', 'opentik'),
+            'description' => esc_html__('إعدادات واجهة التعليقات الخفيفة المرتبطة بقاعدة Cloudflare D1.', 'opentik'),
         ]);
 
         $wp_customize->add_setting('opentik_show_comments', ['default' => true, 'sanitize_callback' => 'opentik_sanitize_checkbox']);
@@ -137,12 +137,12 @@ if (!function_exists('opentik_customize_register')) {
             'type' => 'checkbox',
         ]);
 
-        $wp_customize->add_setting('opentik_cusdis_app_id', ['default' => '', 'sanitize_callback' => 'sanitize_text_field']);
-        $wp_customize->add_control('opentik_cusdis_app_id', [
-            'label' => esc_html__('معرف تطبيق Cusdis (App ID)', 'opentik'),
-            'description' => esc_html__('مثال: 5f90001f-0da9-4f4a-a5c6-e5e90c0ab61f', 'opentik'),
+        $wp_customize->add_setting('opentik_comments_api_url', ['default' => 'https://comments-api.opentik.win/comments', 'sanitize_callback' => 'esc_url_raw']);
+        $wp_customize->add_control('opentik_comments_api_url', [
+            'label' => esc_html__('رابط API التعليقات', 'opentik'),
+            'description' => esc_html__('الرابط الافتراضي: https://comments-api.opentik.win/comments', 'opentik'),
             'section' => 'opentik_comments_section',
-            'type' => 'text',
+            'type' => 'url',
         ]);
 
         // --- Advanced Settings (Static Sites Compatibility) ---
